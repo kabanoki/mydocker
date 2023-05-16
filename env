@@ -1,0 +1,5 @@
+DB_NAME=test
+DB_USER=vagrant
+DB_PASS=password
+DB_PORT=13306
+TZ=Asia/Tokyo

@@ -1,0 +1,68 @@
+version: '3.3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    extra_hosts:
+      - "host.docker.internal:192.168.33.10"
+    depends_on:
+      - appphp74
+      # - appphp71
+      # - appphp56
+    volumes:
+      - ./web/conf/default.conf:/etc/nginx/conf.d/default.conf
+  appphp74:
+    build: ./appphp74
+    ports:
+      - "9001:80"
+    volumes:
+      - ./project:/var/www/html
+    links:
+      - mysql
+      # appphp71:
+      #   build: ./appphp71
+      #   ports:
+      #     - "9071:80"
+      #   volumes:
+      # - ./project:/var/www/html
+      #     - ./appphp71/src:/var/www/html
+      #   links:
+      #     - mysql  
+      # appphp56:
+      #   build: ./appphp56
+      #   ports:
+      #     - "9056:80"
+      #   volumes:
+      #     - ./project:/var/www/html
+      #     # - ./appphp56/src:/var/www/html
+      #   links:
+      #     - mysql    
+  mysql:
+    build: ./mysql
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
+    ports:
+      - ${DB_PORT}:3306
+    volumes:
+      - ./mysql/var_lib_mysql:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/logs:/var/log/mysql
+    command: --innodb-use-native-aio=0
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=${DB_PASS}
+    links:
+      - mysql
+    ports:
+      - 8080:80
+    volumes:
+      - /sessions

@@ -1,0 +1,68 @@
+server {
+  client_max_body_size 20M;
+  listen 80;
+  server_name local.hoge.com;
+
+  location / {
+    proxy_pass http://host.docker.internal:9001; # どこにアクセスさせるか
+    proxy_redirect                          off;
+    proxy_set_header Host                   $host;
+    proxy_set_header X-Real-IP              $remote_addr;
+    proxy_set_header X-Forwarded-Host       $host;
+    proxy_set_header X-Forwarded-Server     $host;
+    proxy_set_header X-Forwarded-Proto      $scheme;
+    proxy_set_header X-Forwarded-For        $proxy_add_x_forwarded_for;
+    proxy_read_timeout                      180;
+    proxy_connect_timeout                   180;
+    proxy_send_timeout                      180;
+  }
+
+  access_log /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
+}
+
+server {
+  client_max_body_size 20M;
+  listen 80;
+  server_name local.hoge.jp;
+
+  location / {
+    proxy_pass http://host.docker.internal:9056; # どこにアクセスさせるか
+    proxy_redirect                          off;
+    proxy_set_header Host                   $host;
+    proxy_set_header X-Real-IP              $remote_addr;
+    proxy_set_header X-Forwarded-Host       $host;
+    proxy_set_header X-Forwarded-Server     $host;
+    proxy_set_header X-Forwarded-Proto      $scheme;
+    proxy_set_header X-Forwarded-For        $proxy_add_x_forwarded_for;
+    proxy_read_timeout                      180;
+    proxy_connect_timeout                   180;
+    proxy_send_timeout                      180;
+  }
+
+  access_log /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
+}
+
+server {
+  client_max_body_size 20M;
+  listen 80;
+  server_name 127.0.0.1;
+
+  location / {
+    proxy_pass http://host.docker.internal:9001; # どこにアクセスさせるか
+    proxy_redirect                          off;
+    proxy_set_header Host                   $host;
+    proxy_set_header X-Real-IP              $remote_addr;
+    proxy_set_header X-Forwarded-Host       $host;
+    proxy_set_header X-Forwarded-Server     $host;
+    proxy_set_header X-Forwarded-Proto      $scheme;
+    proxy_set_header X-Forwarded-For        $proxy_add_x_forwarded_for;
+    proxy_read_timeout                      180;
+    proxy_connect_timeout                   180;
+    proxy_send_timeout                      180;
+  }
+
+  access_log /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
+}

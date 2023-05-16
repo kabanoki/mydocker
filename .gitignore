@@ -1,0 +1,12 @@
+.env
+mysql/var_lib_mysql/*
+mysql/logs/*
+web/conf/default.conf
+appphp56/conf/base.conf
+appphp56/src/index.php
+appphp71/conf/base.conf
+appphp71/src/index.php
+appphp74/conf/base.conf
+appphp74/src/index.php
+appphp80/conf/base.conf
+appphp80/src/index.php
